@@ -5,15 +5,16 @@
 // Read ahead at your own risk.
 // ----------
 
+const STARTING_URL = "https://instituto0.wordpress.com/";
+const NTH_LAST_URL = 1;
+const ITERATIONS = 10;
+
 const puppeteer = require("puppeteer");
-const startingURL = "https://thethriftypennies.blogspot.com/";
-const nthLastURL = 5;
-const iterations = 10;
-async function run() {
-    let currentURL = startingURL;
-    for (let i = 0; i < iterations; i++) {
-        console.log(currentURL, `Iteration ${i}/${iterations}`);
-        currentURL = await evaluateURL(currentURL, nthLastURL);
+async function runProgram() {
+    let currentURL = STARTING_URL;
+    for (let i = 0; i < ITERATIONS; i++) {
+        console.log(currentURL, `Iteration ${i}/${ITERATIONS}`);
+        currentURL = await evaluateURL(currentURL, NTH_LAST_URL);
     }
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -45,4 +46,4 @@ async function evaluateURL(urlToEvaluate, n) {
     await browser.close();
     return href;
 }
-run();
+runProgram();
