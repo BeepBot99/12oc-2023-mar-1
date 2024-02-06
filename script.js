@@ -1,23 +1,48 @@
-const puppeteer = require("puppeteer");
-const startingURL = "https://pdastats.com";
-const nthURL = 3;
+// WARNING
+// ----------
+// The following code is a solution to the Twelve of Code March, 2023, Challenge 1.
+// Viewing it will spoil the answer to the challenge.
+// Read ahead at your own risk.
+// ----------
 
-const iterations = 1;
-(async () => {
-    // Launch the browser and open a new blank page
+const puppeteer = require("puppeteer");
+const startingURL = "https://thethriftypennies.blogspot.com/";
+const nthLastURL = 5;
+const iterations = 10;
+async function run() {
+    let currentURL = startingURL;
+    for (let i = 0; i < iterations; i++) {
+        console.log(currentURL, `Iteration ${i}/${iterations}`);
+        currentURL = await evaluateURL(currentURL, nthLastURL);
+    }
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-
-    // Navigate the page to a URL
-    await page.goto(startingURL);
-
-    // Wait and click on first result
-    const searchResultSelector = `a:nth-child(${nthURL})`;
-    await page.waitForSelector(searchResultSelector);
-    await page.click(searchResultSelector);
-
-    // Print the full title
-    console.log(await page.url());
+    await page.goto(currentURL);
+    currentURL = page.url();
+    await browser.close();
+    console.log(currentURL, "Done");
+}
+async function evaluateURL(urlToEvaluate, n) {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    let href;
+    await page.goto(urlToEvaluate);
+    if (
+        await page.evaluate(
+            `document.getElementsByTagName("a")[document.getElementsByTagName("a").length-${n}].hasAttribute("href")`
+        )
+    ) {
+        href = await page.evaluate(
+            `document.getElementsByTagName("a")[document.getElementsByTagName("a").length-${n}].getAttribute("href")`
+        );
+        if (href.indexOf("http") !== 0) {
+            href = await evaluateURL(urlToEvaluate, n + 1);
+        }
+    } else {
+        href = await evaluateURL(urlToEvaluate, n + 1);
+    }
 
     await browser.close();
-})();
+    return href;
+}
+run();
