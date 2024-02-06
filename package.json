@@ -1,0 +1,19 @@
+{
+    "name": "12oc-2023-mar-1",
+    "version": "1.0.0",
+    "description": "The code for Twelve of Code's March, 2023, challenge 1",
+    "main": "index.js",
+    "scripts": {
+        "test": "node script.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/BeepBot99/12oc-2023-mar-1.git"
+    },
+    "author": "BeepBot99",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/BeepBot99/12oc-2023-mar-1/issues"
+    },
+    "homepage": "https://github.com/BeepBot99/12oc-2023-mar-1#readme"
+}
