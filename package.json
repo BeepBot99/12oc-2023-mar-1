@@ -15,5 +15,8 @@
     "bugs": {
         "url": "https://github.com/BeepBot99/12oc-2023-mar-1/issues"
     },
-    "homepage": "https://github.com/BeepBot99/12oc-2023-mar-1#readme"
+    "homepage": "https://github.com/BeepBot99/12oc-2023-mar-1#readme",
+    "dependencies": {
+        "puppeteer": "^22.0.0"
+    }
 }
