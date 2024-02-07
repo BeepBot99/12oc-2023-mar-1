@@ -5,7 +5,7 @@
 // Read ahead at your own risk.
 // ----------
 
-const STARTING_URL = "https://this-is-benfica.tumblr.com/";
+const STARTING_URL = "https://auda.org.au/";
 const ITERATIONS = 10;
 
 const puppeteer = require("puppeteer");
@@ -27,27 +27,29 @@ async function evaluateURL(urlToEvaluate, n) {
     const page = await browser.newPage();
     let href;
     await page.goto(urlToEvaluate);
-    // console.log(
-    //     await page.evaluate(
-    //         `document.getElementsByTagName("a")[document.getElementsByTagName("a").length-${n}]`
-    //     ),
-    //     n
-    // );
-    if (
-        await page.evaluate(
-            `document.getElementsByTagName("a")[document.getElementsByTagName("a").length-${n}].hasAttribute("href")`
-        )
-    ) {
-        href = await page.evaluate(
-            `document.getElementsByTagName("a")[document.getElementsByTagName("a").length-${n}].getAttribute("href")`
-        );
-        await browser.close();
-        if (href.indexOf("http") !== 0) {
+    try {
+        if (
+            await page.evaluate(
+                `document.getElementsByTagName("a")[document.getElementsByTagName("a").length-${n}].hasAttribute("href")`
+            )
+        ) {
+            href = await page.evaluate(
+                `document.getElementsByTagName("a")[document.getElementsByTagName("a").length-${n}].getAttribute("href")`
+            );
+            await browser.close();
+            if (href.indexOf("http") !== 0) {
+                href = await evaluateURL(urlToEvaluate, n + 1);
+            }
+        } else {
+            await browser.close();
             href = await evaluateURL(urlToEvaluate, n + 1);
         }
-    } else {
-        await browser.close();
-        href = await evaluateURL(urlToEvaluate, n + 1);
+    } catch (error) {
+        if (error.name === "TypeError") {
+            console.log("No anchor tags with URLs on that page!");
+        } else {
+            console.log("Unkown error:\n", error);
+        }
     }
 
     return href;
