@@ -14,13 +14,18 @@ async function runProgram() {
     for (let i = 0; i < ITERATIONS; i++) {
         console.log(currentURL, `Iteration ${i}/${ITERATIONS}`);
         currentURL = await evaluateURL(currentURL, 1);
+        if (!currentURL) {
+            break;
+        }
     }
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.goto(currentURL);
-    currentURL = page.url();
-    await browser.close();
-    console.log(currentURL, "Done");
+    if (currentURL) {
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.goto(currentURL);
+        currentURL = page.url();
+        await browser.close();
+        console.log(currentURL, "Done");
+    }
 }
 async function evaluateURL(urlToEvaluate, n) {
     const browser = await puppeteer.launch();
@@ -47,8 +52,10 @@ async function evaluateURL(urlToEvaluate, n) {
     } catch (error) {
         if (error.name === "TypeError") {
             console.log("No anchor tags with URLs on that page!");
+            return false;
         } else {
             console.log("Unkown error:\n", error);
+            return false;
         }
     }
 
