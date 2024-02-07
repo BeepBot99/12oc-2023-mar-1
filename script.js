@@ -4,6 +4,19 @@
 // Viewing it will spoil the answer to the challenge.
 // Read ahead at your own risk.
 // ----------
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// ----------
 
 const STARTING_URL = "https://auda.org.au/";
 const ITERATIONS = 10;
