@@ -18,7 +18,7 @@
 //
 // ----------
 
-const STARTING_URL = "https://auda.org.au/";
+const STARTING_URL = "https://assdqjwjd.blogspot.com/";
 const ITERATIONS = 10;
 
 const puppeteer = require("puppeteer");
@@ -28,17 +28,16 @@ async function runProgram() {
         console.log(currentURL, `Iteration ${i}/${ITERATIONS}`);
         currentURL = await evaluateURL(currentURL, 1);
         if (!currentURL) {
-            break;
+            process.exit();
         }
     }
-    if (currentURL) {
+    
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
         await page.goto(currentURL);
         currentURL = page.url();
         await browser.close();
         console.log(currentURL, "Done");
-    }
 }
 async function evaluateURL(urlToEvaluate, n) {
     const browser = await puppeteer.launch();
